@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                         datefmt='%a, %d %b %Y %H:%M:%S',
                         filename='lisa.log',
-                        filemode='w')
+                        filemode='a')
 
 
 console = logging.StreamHandler()
@@ -39,3 +39,9 @@ UPLOAD_IMG_URL = 'http://kylin.my/vinci/index.php/sensors/upload_img'
 #定义GPIO模式
 GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
+
+#扫屎模块 电机针脚定义
+MOTOR_PWM_CHANNEL = 3
+MOTOR_DIR_CHANNEL = 5
+MOTOR_ENABLED_CHANNEL = 7
+MOTOR_FREQUENT = 50000

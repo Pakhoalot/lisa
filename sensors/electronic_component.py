@@ -22,7 +22,7 @@ class ElectronicComponent:
         return self.__status
 
     def setStatus(self, status):
-        self.status = status
+        self.__status = status
 
     def start(self):
         self.setStatus(self.RUNNING)

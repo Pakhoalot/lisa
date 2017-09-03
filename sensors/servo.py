@@ -8,9 +8,6 @@ __author__ = 'PakhoLeung'
 from sensors.electronic_component import ElectronicComponent
 
 import logging
-import threading
-
-import asyncio
 
 import time
 
@@ -29,9 +26,10 @@ class Servo(ElectronicComponent):
         self.__freq = freq
         GPIO.setup(self.__channel, GPIO.OUT, initial=False)
         self.__pwm = GPIO.PWM(self.__channel, self.__freq)
+        self.__pwm.start(0)
+
 
     def start(self):
-        super().start()
         pass
 
     def terminate(self):
@@ -51,21 +49,26 @@ class Servo(ElectronicComponent):
         self.__dc = dc
         self.__pwm.ChangeDutyCycle(self.__dc)
 
+    def stop(self):
+        super().stop()
+        self.__pwm.stop()
+
     def rotate(self, angle):
         # 该函数传入一个角度制角度，为舵机旋转一定角度
         # 这是一个耗时函数，请不要在主函数使用该函数
         if angle < 0 or angle > 180:
             raise ValueError("Angle is out of Bound.")
-        if threading.current_thread() == threading._main_thread:
-            raise threading.ThreadError("spin is a time-consuming job. Can't run in mainThread.")
+        # if threading.current_thread() == threading._main_thread:
+        #     raise threading.ThreadError("spin is a time-consuming job. Can't run in mainThread.")
         if self.getStatus() == self.IDLE:
             self.setStatus(self.RUNNING)
             t = time.time()
             self.__dc = (angle / (180 - 0)) * (12.5 - 2.5) + 2.5
             self.changeDC(self.__dc)
-            time.sleep(0.2)
+            time.sleep(1)
             real_delay = time.time() - t
-            logging.info(self.__str__()+"   spin time:"+real_delay)
+            logging.info("spin time:"+str(real_delay))
             self.setStatus(self.IDLE)
-        else :
-            logging.info("This servo is used or had been terminated")
+
+        else:
+            logging.info("This servo is used or had been terminated" + str(self.getStatus()))

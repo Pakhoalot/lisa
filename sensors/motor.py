@@ -3,37 +3,38 @@
 #-*- coding:utf-8 -*-
 
 ''
-#from sensors.electronic_component import ElectronicComponent
-import electronic_component
+
 import threading
 import time
 import RPi.GPIO as GPIO
 
+from sensors.electronic_component import ElectronicComponent
+
 __author__ = 'PakhoLeung'
 
-class Motor(electronic_component.ElectronicComponent):
+class Motor(ElectronicComponent):
 
     __channel1 = None  # PWM信号
     __channel2 = None  # 方向信号
     __channel3 = None  # 使能信号
-    __LEFT = GPIO.HIGH
-    __RIGHT = GPIO.LOW
+    __LEFT = 5
+    __RIGHT = 6
     __freq = None
     __pwm = None
     direction = None
 
-    def __init__(self, PWM_channel: int, dir_channel: int, enabled_channel: int, freq) -> None:
+    def __init__(self, PWM_channel:int, dir_channel: int, enabled_channel: int, freq) -> None:
         super().__init__()
         # channel1 给PWM信号
         self.__channel1 = PWM_channel
         self.__freq = freq
         GPIO.setup(self.__channel1, GPIO.OUT, initial=False)
-        self.__pwm = GPIO.PWM(self.__channel1, self.__freq)
+
         # channel2 给方向信号
         self.__channel2 = dir_channel
         self.direction = self.__LEFT
         GPIO.setup(self.__channel2, GPIO.OUT)
-        GPIO.output(self.__channel2, self.direction)
+        # GPIO.output(self.__channel2, GPIO.HIGH)
 
         # channel3 给使能信号，初始为LOW
         self.__channel3 = enabled_channel
@@ -52,15 +53,18 @@ class Motor(electronic_component.ElectronicComponent):
     def changeDirection(self):
         if self.direction == self.__LEFT:
             self.direction = self.__RIGHT
-        else:
+            GPIO.cleanup(self.__channel2)
+        elif self.direction == self.__RIGHT:
             self.direction = self.__LEFT
-        GPIO.output(self.__channel2, self.direction)
+            GPIO.setup(self.__channel2, GPIO.OUT)
+            GPIO.output(self.__channel2, GPIO.LOW)
+
         return self.direction
 
     #令点击开始转动
     def start(self):
         super().start()
-        # if self.__pwm == None:
+        #if self.__pwm == None:
         self.__pwm = GPIO.PWM(self.__channel1, self.__freq)
         self.__pwm.start(50)
         GPIO.output(self.__channel3, GPIO.LOW)
@@ -71,14 +75,17 @@ class Motor(electronic_component.ElectronicComponent):
         GPIO.output(self.__channel3, GPIO.HIGH)
 
 
+    def stop(self):
+        super().stop()
+        self.__pwm.stop()
+        GPIO.output(self.__channel3,GPIO.HIGH)
+
     def terminate(self):
         super().terminate()
         self.__pwm.stop()
         GPIO.output(self.__channel3, GPIO.LOW)
         channel = [self.__channel1, self.__channel2, self.__channel3]
         GPIO.cleanup(channel)
-
-
 
 
 if __name__ == '__main__':

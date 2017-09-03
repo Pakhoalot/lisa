@@ -5,7 +5,9 @@
 ''
 import logging
 
+from sensors.servo import Servo
 from services.camera_service import CameraService
+from services.clean_shit_service import CleanShitService
 from services.water_dispenser_service import WaterDispenserService
 
 __author__ = 'PakhoLeung'
@@ -17,10 +19,23 @@ import config
 
 if __name__ == '__main__':
 
+
+
     try:
-        cameraService = CameraService()
-        cameraService.startService()
-        waterSercice = WaterDispenserService(channel=7)
-        waterSercice.startService()
+        # cameraService = CameraService()
+        # cameraService.startService()
+        # waterSercice = WaterDispenserService(channel=7)
+        # waterSercice.startService()
+        cleanService = CleanShitService()
+        cleanService.startService()
+
+        # servo = Servo(channel=11,freq=50)
+        # while True:
+        #     servo.rotate(0)
+        #     time.sleep(1)
+        #     servo.rotate(180)
+        #     time.sleep(1)
+
+
     except KeyboardInterrupt:
         pass
