@@ -5,6 +5,7 @@
 ''
 import logging
 
+from sensors.distance_detector import DistanceDetector
 from sensors.servo import Servo
 from services.camera_service import CameraService
 from services.clean_shit_service import CleanShitService
@@ -37,5 +38,11 @@ if __name__ == '__main__':
         #     time.sleep(1)
 
 
+        #test distance
+        # dd = DistanceDetector(7,8)
+        # while True:
+        #     dis = dd.getDistance()
+        #     print(dis)
+        cleanService.join()
     except KeyboardInterrupt:
         pass

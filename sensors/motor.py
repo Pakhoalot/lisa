@@ -64,10 +64,10 @@ class Motor(ElectronicComponent):
     #令点击开始转动
     def start(self):
         super().start()
-        #if self.__pwm == None:
-        self.__pwm = GPIO.PWM(self.__channel1, self.__freq)
-        self.__pwm.start(50)
-        GPIO.output(self.__channel3, GPIO.LOW)
+        if self.__pwm == None:
+            self.__pwm = GPIO.PWM(self.__channel1, self.__freq)
+            self.__pwm.start(50)
+            GPIO.output(self.__channel3, GPIO.LOW)
 
     def pause(self):
         super().pause()
@@ -77,8 +77,10 @@ class Motor(ElectronicComponent):
 
     def stop(self):
         super().stop()
-        self.__pwm.stop()
-        GPIO.output(self.__channel3,GPIO.HIGH)
+        if self.__pwm != None:
+            self.__pwm.stop()
+            self.__pwm = None
+            GPIO.output(self.__channel3,GPIO.HIGH)
 
     def terminate(self):
         super().terminate()
