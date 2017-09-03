@@ -3,10 +3,25 @@
 #-*- coding:utf-8 -*-
 
 ''
+import logging
 
 __author__ = 'PakhoLeung'
+#载入logging的设置
+logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        filename='lisa.log',
+                        filemode='w')
+
+
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+console.setFormatter(formatter)
+logging.getLogger('').addHandler(console)
+
 # 照片存放的位置
-IMG_PATH = './capture/'
+IMG_PATH = './captures/'
 IMG_HEIGHT = 300
 IMG_WIDTH = 400
 # 每次照相的间隔，单位秒

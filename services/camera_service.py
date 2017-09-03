@@ -3,6 +3,10 @@
 #-*- coding:utf-8 -*-
 
 ''
+import time
+
+import config
+import upload_data
 from sensors.camera import Camera
 from services.service import Service
 
@@ -17,6 +21,9 @@ class CameraService(Service):
 
     def startService(self):
         while True:
-            camera.capture()
+            #得到路径，为未来的上传准备
+            img_path = self.camera.capture()
+            upload_data.IMG_PATH = img_path
+            time.sleep(config.CAPTURE_PERIOD)
 
 
