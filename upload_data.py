@@ -6,4 +6,5 @@
 
 __author__ = 'PakhoLeung'
 
-IMG_PATH = ""
+IMG_PATH = None
+LIQUID_LEVEL = None

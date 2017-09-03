@@ -8,3 +8,9 @@ __author__ = 'PakhoLeung'
 class Service:
     def __init__(self) -> None:
         super().__init__()
+
+    def startService(self):
+        pass
+
+    def stopService(self):
+        pass

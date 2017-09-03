@@ -3,6 +3,7 @@
 #-*- coding:utf-8 -*-
 
 ''
+import RPi.GPIO as GPIO
 
 __author__ = 'PakhoLeung'
 
@@ -29,6 +30,8 @@ class ElectronicComponent:
     def terminate(self):
         self.setStatus(self.TERMINATED)
 
+    def stop(self):
+        self.setStatus(self.IDLE)
 
     def pause(self):
         self.setStatus(self.PAUSE)

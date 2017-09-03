@@ -6,6 +6,7 @@
 import logging
 
 from services.camera_service import CameraService
+from services.water_dispenser_service import WaterDispenserService
 
 __author__ = 'PakhoLeung'
 
@@ -18,7 +19,8 @@ if __name__ == '__main__':
 
     try:
         cameraService = CameraService()
-        t1 = threading.Thread(target=cameraService.startService,args=())
-        t1.start()
+        cameraService.startService()
+        waterSercice = WaterDispenserService(channel=7)
+        waterSercice.startService()
     except KeyboardInterrupt:
-        logging.info("main ends")
+        pass
