@@ -8,7 +8,7 @@ from threading import Thread
 
 import time
 
-import upload_data
+import shared_data
 from sensors.liquid_level_indicator import LiquidLevelIndicator
 from sensors.switch import Switch
 from services.service import Service
@@ -26,17 +26,17 @@ class WaterDispenserService(Service,Thread):
 
 
     def run(self):
-        self.pump.start()
+        self.pump.on()
         while True:
             level = self.indicator.getData()
             if level == 0 and self.pump.getStatus() == self.pump.RUNNING:
                 logging.info("liquid level is 0, pump stops")
-                self.pump.stop()
+                self.pump.off()
             elif level!=0 and self.pump.getStatus() == self.pump.IDLE:
                 self.pump.start()
-            upload_data.LIQUID_LEVEL = level
+            shared_data.LIQUID_LEVEL = level
             logging.info("the liquid level is "+str(level))
-            time.sleep(0.5)
+            time.sleep(1)
 
     def startService(self):
         self.start()

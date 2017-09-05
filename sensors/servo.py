@@ -30,7 +30,8 @@ class Servo(ElectronicComponent):
 
 
     def start(self):
-        pass
+        super().start()
+        self.__pwm.start(0)
 
     def terminate(self):
         super().terminate()
@@ -45,7 +46,7 @@ class Servo(ElectronicComponent):
         self.__freq = freq
         self.__pwm.ChangeFrequency(self.__freq)
 
-    def changeDC(self, dc):
+    def __changeDC(self, dc):
         self.__dc = dc
         self.__pwm.ChangeDutyCycle(self.__dc)
 
@@ -60,15 +61,11 @@ class Servo(ElectronicComponent):
             raise ValueError("Angle is out of Bound.")
         # if threading.current_thread() == threading._main_thread:
         #     raise threading.ThreadError("spin is a time-consuming job. Can't run in mainThread.")
-        if self.getStatus() == self.IDLE:
-            self.setStatus(self.RUNNING)
-            t = time.time()
-            self.__dc = (angle / (180 - 0)) * (12.5 - 2.5) + 2.5
-            self.changeDC(self.__dc)
-            time.sleep(1)
-            real_delay = time.time() - t
-            logging.info("spin time:"+str(real_delay))
-            self.setStatus(self.IDLE)
-
-        else:
-            logging.info("This servo is used or had been terminated" + str(self.getStatus()))
+        if self.getStatus() == self.RUNNING:
+            logging.info("This servo is occupied.")
+            return
+        self.start()
+        self.__dc = (angle / (180 - 0)) * (12.5 - 2.5) + 2.5
+        self.__changeDC(self.__dc)
+        time.sleep(1)
+        self.stop()

@@ -8,7 +8,7 @@ import threading
 import time
 
 import config
-import upload_data
+import shared_data
 from sensors.camera import Camera
 from services.service import Service
 
@@ -26,8 +26,8 @@ class CameraService(Service,threading.Thread):
             t = time.time()
             #得到路径，为未来的上传准备
             img_path = self.camera.capture()
-            upload_data.IMG_PATH = img_path
-            logging.info("newest uplodad_img change to"+ upload_data.IMG_PATH)
+            shared_data.IMG_PATH = img_path
+            logging.info("newest uplodad_img change to"+ shared_data.IMG_PATH)
             time.sleep(config.CAPTURE_PERIOD)
             period = time.time()-t
             logging.debug("camera service lasts "+str(period))

@@ -10,7 +10,7 @@ class Service:
         super().__init__()
 
     def startService(self):
-        pass
+        raise NotImplementedError
 
     def stopService(self):
-        pass
+        raise NotImplementedError
