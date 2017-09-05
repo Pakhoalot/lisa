@@ -41,8 +41,8 @@ if __name__ == '__main__':
         #test distance
         # dd = DistanceDetector(7,8)
         # while True:
+        #     time.sleep(0.2)
         #     dis = dd.getDistance()
         #     print(dis)
-        cleanService.join()
     except KeyboardInterrupt:
         pass

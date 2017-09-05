@@ -11,7 +11,7 @@ import time
 
 import config
 from sensors.distance_detector import DistanceDetector
-from sensors.motor import Motor
+from sensors.motor_hand_made import Motor
 from services.service import Service
 
 __author__ = 'PakhoLeung'
@@ -37,41 +37,19 @@ class CleanShitService(Service,Thread):
         #开启距离实时监测
         t1 = threading.Thread(target=self.detect,args=())
         t1.start()
-        time_pool = 0
-        real_delay = time.time()
-        begin = time.time()
-        while time_pool < 10:
+
+        #尝试使用手动步进
+        i = 0
+        while i < 370:
             if self.flag == 0:
-                self.motor.start()
-                time.sleep(0.01)
-                time_pool = time_pool + (time.time()-begin)
-                begin = time.time()
+                self.motor.setDirection(self.motor.LEFT)
+                self.motor.forward()
+                i = i+1
             elif self.flag == 1:
-                self.motor.stop()
-                time.sleep(0.01)
-                begin = time.time()
-
-        self.motor.stop()
-        logging.info("clean ends. spend "+ str(time_pool)+ "s")
-        logging.info("real delay"+str(time.time()-real_delay))
-
-
-        time.sleep(1)
-        self.motor.changeDirection()
-        time_pool = 0
-        real_delay = time.time()
-        begin = time.time()
-        while time_pool < 10:
-            if self.flag == 0:
-                self.motor.start()
-                time.sleep(0.01)
-                time_pool = time_pool + (time.time() - begin)
-                begin = time.time()
-            elif self.flag == 1:
-                self.motor.stop()
-                time.sleep(0.01)
-                begin = time.time()
-
+                self.motor.setDirection(self.motor.RIGHT)
+                self.motor.forward()
+                i = i-1
+                pass
 
     def startService(self):
         super().startService()
@@ -82,7 +60,10 @@ class CleanShitService(Service,Thread):
         while True:
             time.sleep(0.2)
             dis = self.distanceDetector.getDistance()
-            if dis < 5:
+            if dis > 100:
+                continue
+            print(dis)
+            if dis < 50:
                 self.flag = 1
                 # if self.motor.getStatus() == self.motor.RUNNING:
                 #     self.motor.pause()
