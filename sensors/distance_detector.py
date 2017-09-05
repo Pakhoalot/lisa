@@ -30,7 +30,7 @@ class DistanceDetector():
         pulse_start = time.time()
 
         #等待高电平结束
-        while GPIO.input(self.__echo) == 1:
+        while GPIO.input(self.__echo) == 1 and time.time()-pulse_start < 0.01:
             pass
         pulse_end = time.time()
         pulse_duration = pulse_end-pulse_start

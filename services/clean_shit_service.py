@@ -18,7 +18,7 @@ from services.service import Service
 __author__ = 'PakhoLeung'
 
 class CleanShitService(Service,Thread):
-    __TAIL = 370
+    __TAIL = 360
     __HEAD = 0
     __POSITION = None
     motor = None
@@ -45,45 +45,60 @@ class CleanShitService(Service,Thread):
         #开启距离实时监测
         t1 = threading.Thread(target=self.detect,args=())
         t1.start()
+        #尝试使用switch
+        self.switch.on()
+        time.sleep(2)
 
+        #板复位
         self.moveToHead()
+
         while self.__POSITION < self.__TAIL:
+            logging.info("start forward")
             if self.flag == 0:
-                self.motor.setDirection(self.motor.LEFT)
+                logging.info(self.__POSITION)
+                self.motor.setDirection(self.motor.RIGHT)
                 self.motor.forward()
-                self.__POSITION = self.__POSITION+1
+                self.__POSITION = self.__POSITION + 1
             elif self.flag == 1:
                 logging.info("Cleaner is blocked. Reset and preapre to Restart")
                 self.moveToHead()
                 #当前方没物体时，重启机器
-                while self.flag == 0:
+                while self.flag == 1:
+                    time.sleep(3)
                     pass
-                logging.info("Clear. Begin to start")
+                time.sleep(5)
+                logging.info("Clear. Begin to restart")
 
         logging.info("Clean up.")
         time.sleep(3)
         self.moveToHead()
 
+        #尝试使用继电器关闭
+        self.switch.off()
+        time.sleep(2)
 
     def moveToHead(self):
         if self.__POSITION != self.__HEAD:
-            self.motor.setDirection(self.motor.RIGHT)
-            while self.__POSITION != 0:
-                self.motor.forward()
-    def moveToTail(self):
-        if self.__POSITION != self.__TAIL:
             self.motor.setDirection(self.motor.LEFT)
             while self.__POSITION != 0:
+                logging.info(self.__POSITION)
                 self.motor.forward()
+                self.__POSITION = self.__POSITION-1
+    def moveToTail(self):
+        if self.__POSITION != self.__TAIL:
+            self.motor.setDirection(self.motor.RIGHT)
+            while self.__POSITION != 0:
+                logging.info(self.__POSITION)
+                self.motor.forward()
+                self.__POSITION = self.__POSITION - 1
     def startService(self):
         self.start()
 
     def detect(self):
-        dis = 1000
         while True:
             time.sleep(0.5)
             dis = self.distanceDetector.getDistance()
-            if dis < 30:
+            if dis < 50:
                 self.flag = 1
                 # if self.motor.getStatus() == self.motor.RUNNING:
                 #     self.motor.pause()
