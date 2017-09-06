@@ -2,6 +2,8 @@
 #-*- coding:utf-8 -*-
 
 ''
+import shared_data
+
 __author__ = 'PakhoLeung'
 
 #Servcice 基类只是用来表示这是一个Service
@@ -14,3 +16,6 @@ class Service:
 
     def stopService(self):
         raise NotImplementedError
+
+    def shareData(self, key:str, value):
+        shared_data.update_data(key, value)

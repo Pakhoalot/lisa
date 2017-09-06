@@ -21,6 +21,21 @@ formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
+#定义GPIO模式
+GPIO.cleanup()
+GPIO.setmode(GPIO.BOARD)
+
+
+#i2c接口地址定义
+ADDRESS = 0x48
+A0 = 0x40
+A1 = 0x41
+A2 = 0x42
+A3 = 0x43
+BUS = smbus.SMBus(1)
+
+
+
 # 照片存放的位置
 IMG_PATH = './captures/'
 IMG_HEIGHT = 300
@@ -31,14 +46,9 @@ CAPTURE_PERIOD = 30
 PREVIEW_TIME = 0.5
 # 矫正拍照间隔,最后一个是修正值
 CAPTURE_PERIOD = CAPTURE_PERIOD - PREVIEW_TIME-0.88
-# 普通传感器收集间隔
-COLLECT_PERIOD = 1
 # 上载图片的url
 UPLOAD_IMG_URL = 'http://kylin.my/vinci/index.php/sensors/upload_img'
 
-#定义GPIO模式
-GPIO.cleanup()
-GPIO.setmode(GPIO.BOARD)
 
 #扫屎模块 电机针脚定义
 CSS_MOTOR_PWM_CHANNEL = 3
@@ -47,9 +57,13 @@ CSS_MOTOR_ENABLED_CHANNEL = 11
 CSS_MOTOR_FREQUENT = 50000
 CSS_SWITCH_CHANNEL = 11
 #超声波传感器 针脚定义
-CSS_DD_TRIGER = 7
-CSS_DD_ECHO = 8
+CSS_DD_TRIGER_CHANNEL = 7
+CSS_DD_ECHO_CHANNEL = 8
 
 #喂食模块针脚定义
 FE_SERVO_CHANNEL = 5
 FE_SERVO_FREQUENT = 50
+
+#饮水机模块 针脚定义
+WDS_LIQUID_LEVEL_SENSOR_CHANNEL = A0
+WDS_PUMP_SWITCH_CHANNEL = 14

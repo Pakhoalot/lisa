@@ -6,6 +6,12 @@
 
 __author__ = 'PakhoLeung'
 
+data = {
 
-IMG_PATH = None
-LIQUID_LEVEL = None
+}
+
+def update_data(key, value):
+    data[key] = value
+
+def update_dict(dict):
+    data.update(dict)

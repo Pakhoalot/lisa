@@ -6,6 +6,7 @@
 import logging
 
 from sensors.distance_detector import DistanceDetector
+from sensors.pressure_sensor import PressureSensor
 from sensors.servo import Servo
 from services.camera_service import CameraService
 from services.clean_shit_service import CleanShitService
@@ -27,8 +28,8 @@ if __name__ == '__main__':
         # cameraService.startService()
         # waterSercice = WaterDispenserService(channel=7)
         # waterSercice.startService()
-        cleanService = CleanShitService()
-        cleanService.startService()
+        # cleanService = CleanShitService()
+        # cleanService.startService()
 
         # servo = Servo(channel=11,freq=50)
         # while True:
@@ -44,5 +45,9 @@ if __name__ == '__main__':
         #     time.sleep(0.2)
         #     dis = dd.getDistance()
         #     print(dis)
+
+
+        pass
+
     except KeyboardInterrupt:
         pass

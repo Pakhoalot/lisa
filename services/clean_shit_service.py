@@ -31,8 +31,8 @@ class CleanShitService(Service,Thread):
                            config.CSS_MOTOR_DIR_CHANNEL,
                            config.CSS_MOTOR_ENABLED_CHANNEL,
                            config.CSS_MOTOR_FREQUENT)
-        self.distanceDetector = DistanceDetector(config.CSS_DD_TRIGER,
-                                                 config.CSS_DD_ECHO)
+        self.distanceDetector = DistanceDetector(config.CSS_DD_TRIGER_CHANNEL,
+                                                 config.CSS_DD_ECHO_CHANNEL)
         self.switch = Switch(config.CSS_SWITCH_CHANNEL)
         #设置版位置为零
         self.__POSITION = 0
@@ -43,7 +43,7 @@ class CleanShitService(Service,Thread):
     def run(self):
 
         #开启距离实时监测
-        t1 = threading.Thread(target=self.detect,args=())
+        t1 = threading.Thread(target=self.detect,args=(), daemon=True)
         t1.start()
         #尝试使用switch
         self.switch.on()
@@ -76,6 +76,7 @@ class CleanShitService(Service,Thread):
         #尝试使用继电器关闭
         self.switch.off()
         time.sleep(2)
+        t1.join(timeout=0)
 
     def moveToHead(self):
         if self.__POSITION != self.__HEAD:

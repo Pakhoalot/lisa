@@ -54,7 +54,7 @@ class Servo(ElectronicComponent):
         super().stop()
         self.__pwm.stop()
 
-    def rotate(self, angle):
+    def rotateTo(self, angle):
         # 该函数传入一个角度制角度，为舵机旋转一定角度
         # 这是一个耗时函数，请不要在主函数使用该函数
         if angle < 0 or angle > 180:

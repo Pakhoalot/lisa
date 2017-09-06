@@ -18,8 +18,10 @@ class Switch(ElectronicComponent):
 
 
     def on(self):
+        self.start()
         GPIO.output(self.__channel, GPIO.HIGH)
 
     def off(self):
+        self.stop()
         GPIO.output(self.__channel, GPIO.LOW)
 

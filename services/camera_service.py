@@ -26,7 +26,7 @@ class CameraService(Service,threading.Thread):
             t = time.time()
             #得到路径，为未来的上传准备
             img_path = self.camera.capture()
-            shared_data.IMG_PATH = img_path
+            self.shareData("IMG_PATH", img_path)
             logging.info("newest uplodad_img change to"+ shared_data.IMG_PATH)
             time.sleep(config.CAPTURE_PERIOD)
             period = time.time()-t

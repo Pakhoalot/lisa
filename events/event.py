@@ -7,8 +7,12 @@
 __author__ = 'PakhoLeung'
 
 class MyEvent:
-    def __init__(self) -> None:
+    type = None
+    data = {}
+    def __init__(self,type, data=None) -> None:
         super().__init__()
+        self.type = type
+        self.data.update(data)
 
-    def startEvent(self):
-        raise NotImplementedError
+    def addData(self, data):
+        self.data.update(data)
