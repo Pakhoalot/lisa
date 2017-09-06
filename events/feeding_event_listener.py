@@ -3,12 +3,12 @@
 #-*- coding:utf-8 -*-
 
 ''
+import logging
+import threading
 from threading import Thread
-
 import time
-
 import config
-from events.event import MyEvent
+from events.Listener import Listener
 from sensors.pressure_sensor import PressureSensor
 from sensors.servo import Servo
 
@@ -17,39 +17,43 @@ __author__ = 'PakhoLeung'
 
 
 
-class FeedingEvent(MyEvent):
+class FeedingEventListener(Listener):
     servo = None
     pressureSensor = None
-    present = None
     target = None
+    present = None
 
-    def __init__(self, grams) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        servo = Servo(config.FE_SERVO_CHANNEL,
+        self.servo = Servo(config.FE_SERVO_CHANNEL,
                       config.FE_SERVO_FREQUENT)
         self.pressureSensor = PressureSensor()
-        self.target = grams
         self.present = self.pressureSensor.getData()
 
-    def run(self):
 
+    def excute(self, event):
+        # Listener的执行方法，注册时使用的方法
+        if 'target' in event.data:
+            self.target = event.data['target']
+        else :
+            logging.error("haven't key 'target'. Terminate Excution")
+            return
 
         t = Thread(target=self.detect, args=(), daemon=True)
         t.start()
 
         if self.present < self.target:
+            logging.info("in "+ threading.current_thread().getName()+": "+"open the gate!")
             self.openGate()
         else:
             return
         while self.present < self.target:
+            # self.dectect()
             pass
         self.closeGate()
         #该线程终止
         t.join(timeout=0)
 
-
-    def startEvent(self):
-        self.run()
 
 
     def openGate(self):

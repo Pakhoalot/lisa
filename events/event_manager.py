@@ -19,6 +19,7 @@ class EventManager:
         #事件对象列表
         self.__eventQueue = Queue()
         self.active = False
+        self.__thread = Thread(target=self.__run)
         # 这里的__handlers是一个字典，用来保存对应的事件的响应函数
         # 其中每个键对应的值是一个列表，列表中保存了对该事件监听的响应函数，一对多
         self.__handlers = {
@@ -34,15 +35,17 @@ class EventManager:
             for handler in self.__handlers[event.type]:
                 handler(event)
 
-    def start(self):
-        self.__active = True
-
+    def __run(self):
         while self.__active == True:
             try:
                 event = self.__eventQueue.get(block=True, timeout=1)
                 self.__eventProcess(event)
             except Empty :
                 pass
+
+    def start(self):
+        self.__active = True
+        self.__thread.start()
 
     def stop(self):
         self.__active=False

@@ -85,6 +85,8 @@ class CleanShitService(Service,Thread):
                 logging.info(self.__POSITION)
                 self.motor.forward()
                 self.__POSITION = self.__POSITION-1
+
+
     def moveToTail(self):
         if self.__POSITION != self.__TAIL:
             self.motor.setDirection(self.motor.RIGHT)

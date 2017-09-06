@@ -16,4 +16,4 @@ class PressureSensor(ElectronicComponent):
 
 
     def getData(self):
-        pass
+        return 1

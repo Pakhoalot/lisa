@@ -5,19 +5,23 @@
 ''
 import logging
 
+from events.event_manager import EventManager
+from events.event_register_list import EVENT_FEEDING
+from events.feeding_event_listener import FeedingEventListener
+from events.myevent import MyEvent
 from sensors.distance_detector import DistanceDetector
 from sensors.pressure_sensor import PressureSensor
 from sensors.servo import Servo
 from services.camera_service import CameraService
 from services.clean_shit_service import CleanShitService
 from services.water_dispenser_service import WaterDispenserService
-
-__author__ = 'PakhoLeung'
-
 import time
 import threading
 import RPi.GPIO as GPIO
 import config
+
+__author__ = 'PakhoLeung'
+
 
 if __name__ == '__main__':
 
@@ -45,9 +49,22 @@ if __name__ == '__main__':
         #     time.sleep(0.2)
         #     dis = dd.getDistance()
         #     print(dis)
+        feedingEventListener = FeedingEventListener()
+        eventManager = EventManager()
+        eventManager.addEventListener(EVENT_FEEDING,feedingEventListener.excute)
+
+        eventManager.start()
+        while True:
+            print("now")
+            input("haha:")
+            eventManager.sendEvent(event=MyEvent(
+                type=EVENT_FEEDING,
+                data={
+                    'target': 280
+                }))
 
 
-        pass
+
 
     except KeyboardInterrupt:
         pass

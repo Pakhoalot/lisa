@@ -5,6 +5,7 @@
 ''
 import logging
 import RPi.GPIO as GPIO
+import smbus
 
 __author__ = 'PakhoLeung'
 #载入logging的设置
@@ -61,9 +62,11 @@ CSS_DD_TRIGER_CHANNEL = 7
 CSS_DD_ECHO_CHANNEL = 8
 
 #喂食模块针脚定义
-FE_SERVO_CHANNEL = 5
+FE_SERVO_CHANNEL = 7
 FE_SERVO_FREQUENT = 50
 
 #饮水机模块 针脚定义
 WDS_LIQUID_LEVEL_SENSOR_CHANNEL = A0
 WDS_PUMP_SWITCH_CHANNEL = 14
+
+#喂食模块
