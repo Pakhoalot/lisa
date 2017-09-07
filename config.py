@@ -36,7 +36,7 @@ A3 = 0x43
 BUS = smbus.SMBus(1)
 
 
-
+#相机模块 定义
 # 照片存放的位置
 IMG_PATH = './captures/'
 IMG_HEIGHT = 300
@@ -49,7 +49,7 @@ PREVIEW_TIME = 0.5
 CAPTURE_PERIOD = CAPTURE_PERIOD - PREVIEW_TIME-0.88
 # 上载图片的url
 UPLOAD_IMG_URL = 'http://kylin.my/vinci/index.php/sensors/upload_img'
-
+CS_SERVO_CHANNEL = 7
 
 #扫屎模块 电机针脚定义
 CSS_MOTOR_PWM_CHANNEL = 3
@@ -69,5 +69,3 @@ FE_PRESSURE_DT_CHANNEL = 8
 #饮水机模块 针脚定义
 WDS_LIQUID_LEVEL_SENSOR_CHANNEL = A0
 WDS_PUMP_SWITCH_CHANNEL = 14
-
-#喂食模块

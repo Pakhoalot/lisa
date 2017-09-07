@@ -15,3 +15,6 @@ def update_data(key, value):
 
 def update_dict(dict):
     data.update(dict)
+
+def getData(key):
+    data.get(key)

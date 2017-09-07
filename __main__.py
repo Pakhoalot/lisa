@@ -10,6 +10,7 @@ from events.event_manager import EventManager
 from events.event_register_list import *
 from events.feeding_event_listener import FeedingEventListener
 from events.myevent import MyEvent
+from events.rotate_camera_event_listener import RotateCameraEventListener
 from sensors.distance_detector import DistanceDetector
 from sensors.pressure_sensor import PressureSensor
 from sensors.servo import Servo
@@ -29,13 +30,8 @@ if __name__ == '__main__':
 
 
     try:
-        # cameraService = CameraService()
-        # cameraService.startService()
-        # waterSercice = WaterDispenserService(channel=7)
-        # waterSercice.startService()
-        # cleanService = CleanShitService()
-        # cleanService.startService()
 
+        # 测试伺服机
         # servo = Servo(channel=11,freq=50)
         # while True:
         #     servo.rotate(0)
@@ -51,12 +47,29 @@ if __name__ == '__main__':
         #     dis = dd.getDistance()
         #     print(dis)
 
+        #测试压力传感器
+        # pressureSensor = PressureSensor(SCK_channel=7, DT_channel=8)
+        # while True:
+        #     print(pressureSensor.getData())
+        #     time.sleep(1)
+
+
+        #开启服务
+        # cameraService = CameraService()
+        # cameraService.startService()
+        # waterSercice = WaterDispenserService(channel=7)
+        # waterSercice.startService()
+        # cleanService = CleanShitService()
+        # cleanService.startService()
+
         # 尝试使用事件驱动模型
         eventManager = EventManager()
         feedingEventListener = FeedingEventListener()
         cleanShitEventListener = CleanShitEventListener()
+        rotateCameraEventListener = RotateCameraEventListener()
         eventManager.addEventListener(EVENT_FEEDING,feedingEventListener.excute)
         eventManager.addEventListener(EVENT_CLEAN_SHIT, cleanShitEventListener.excute)
+        eventManager.addEventListener(EVENT_ROTATE_CAMERA, rotateCameraEventListener.excute)
 
         eventManager.start()
 
@@ -70,11 +83,6 @@ if __name__ == '__main__':
                 }))
 
 
-        #测试压力传感器
-        # pressureSensor = PressureSensor(SCK_channel=7, DT_channel=8)
-        # while True:
-        #     print(pressureSensor.getData())
-        #     time.sleep(1)
 
     except KeyboardInterrupt:
         pass

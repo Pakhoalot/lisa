@@ -18,23 +18,26 @@ __author__ = 'PakhoLeung'
 
 
 class FeedingEventListener(Listener):
-    servo = None
-    pressureSensor = None
     target = None
     present = None
+    servo = None
+    pressureSensor = None
 
     def __init__(self) -> None:
         super().__init__()
+
         self.servo = Servo(config.FE_SERVO_CHANNEL,
-                      config.FE_SERVO_FREQUENT)
+                           config.FE_SERVO_FREQUENT)
         self.pressureSensor = PressureSensor(config.FE_PRESSURE_SCK_CHANNEL,
-                                             config. FE_PRESSURE_DT_CHANNEL
-                                             )
-        self.present = self.pressureSensor.getData()
+                                             config.FE_PRESSURE_DT_CHANNEL)
+        #关上门
+        self.servo.rotateTo(0)
 
 
     def excute(self, event):
-        # Listener的执行方法，注册时使用的方法
+        self.present = self.pressureSensor.getData()
+
+        #获取taget
         if 'target' in event.data:
             self.target = event.data['target']
         else :

@@ -18,12 +18,13 @@ class Servo(ElectronicComponent):
     __pwm = None
     __freq = None  # frequent
     __dc = None  # duty cycle
-
+    __angle = None
 
     def __init__(self, channel: int, freq=50):
         super().__init__()
         self.__channel = channel
         self.__freq = freq
+        self.angle = 0
         GPIO.setup(self.__channel, GPIO.OUT, initial=False)
         self.__pwm = GPIO.PWM(self.__channel, self.__freq)
         self.__pwm.start(0)
@@ -67,5 +68,9 @@ class Servo(ElectronicComponent):
         self.start()
         self.__dc = (angle / (180 - 0)) * (12.5 - 2.5) + 2.5
         self.__changeDC(self.__dc)
+        self.__angle = angle
         time.sleep(1)
         self.stop()
+
+    def presentAngle(self):
+        return self.__angle
