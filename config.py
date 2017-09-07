@@ -10,7 +10,7 @@ import smbus
 __author__ = 'PakhoLeung'
 #载入logging的设置
 logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(threadName)s %(message)s ',
                         datefmt='%a, %d %b %Y %H:%M:%S',
                         filename='lisa.log',
                         filemode='a')
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('%(name)s: %(levelname)s %(threadName)s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
@@ -64,7 +64,8 @@ CSS_DD_ECHO_CHANNEL = 8
 #喂食模块针脚定义
 FE_SERVO_CHANNEL = 7
 FE_SERVO_FREQUENT = 50
-
+FE_PRESSURE_SCK_CHANNEL = 7
+FE_PRESSURE_DT_CHANNEL = 8
 #饮水机模块 针脚定义
 WDS_LIQUID_LEVEL_SENSOR_CHANNEL = A0
 WDS_PUMP_SWITCH_CHANNEL = 14

@@ -27,7 +27,9 @@ class FeedingEventListener(Listener):
         super().__init__()
         self.servo = Servo(config.FE_SERVO_CHANNEL,
                       config.FE_SERVO_FREQUENT)
-        self.pressureSensor = PressureSensor()
+        self.pressureSensor = PressureSensor(config.FE_PRESSURE_SCK_CHANNEL,
+                                             config. FE_PRESSURE_DT_CHANNEL
+                                             )
         self.present = self.pressureSensor.getData()
 
 
@@ -57,12 +59,12 @@ class FeedingEventListener(Listener):
 
 
     def openGate(self):
-        self.servo.rotateTo(90)
+        self.servo.rotateTo(180)
+
+    def closeGate(self):
+        self.servo.rotateTo(0)
 
     def detect(self):
         while True:
             self.pressureSensor.getData()
             time.sleep(1)
-
-    def closeGate(self):
-        self.servo.rotateTo(0)

@@ -3,6 +3,7 @@
 #-*- coding:utf-8 -*-
 
 ''
+import logging
 from queue import Queue, Empty
 from threading import Thread
 
@@ -38,6 +39,7 @@ class EventManager:
     def __run(self):
         while self.__active == True:
             try:
+                logging.info("eventManager running.")
                 event = self.__eventQueue.get(block=True, timeout=1)
                 self.__eventProcess(event)
             except Empty :

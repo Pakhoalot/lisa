@@ -4,7 +4,6 @@
 
 ''
 import logging
-from threading import Thread
 import time
 import config
 from sensors.liquid_level_sensor import LiquidLevelSensor
@@ -13,7 +12,7 @@ from services.service import Service
 
 __author__ = 'PakhoLeung'
 
-class WaterDispenserService(Service,Thread):
+class WaterDispenserService(Service):
     indicator = None
     pump = None
 

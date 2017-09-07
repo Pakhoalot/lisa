@@ -4,17 +4,15 @@
 
 ''
 import logging
-import threading
 import time
 
 import config
-import shared_data
 from sensors.camera import Camera
 from services.service import Service
 
 __author__ = 'PakhoLeung'
 
-class CameraService(Service,threading.Thread):
+class CameraService(Service):
     camera = None
 
     def __init__(self) -> None:
@@ -27,7 +25,7 @@ class CameraService(Service,threading.Thread):
             #得到路径，为未来的上传准备
             img_path = self.camera.capture()
             self.shareData("IMG_PATH", img_path)
-            logging.info("newest uplodad_img change to"+ shared_data.IMG_PATH)
+            logging.info("newest uplodad_img change to"+ img_path)
             time.sleep(config.CAPTURE_PERIOD)
             period = time.time()-t
             logging.debug("camera service lasts "+str(period))

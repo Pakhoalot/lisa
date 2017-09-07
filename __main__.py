@@ -5,8 +5,9 @@
 ''
 import logging
 
+from events.clean_shit_event_listener import CleanShitEventListener
 from events.event_manager import EventManager
-from events.event_register_list import EVENT_FEEDING
+from events.event_register_list import *
 from events.feeding_event_listener import FeedingEventListener
 from events.myevent import MyEvent
 from sensors.distance_detector import DistanceDetector
@@ -43,19 +44,24 @@ if __name__ == '__main__':
         #     time.sleep(1)
 
 
-        #test distance
+        # 测试超声波距离传感器
         # dd = DistanceDetector(7,8)
         # while True:
         #     time.sleep(0.2)
         #     dis = dd.getDistance()
         #     print(dis)
-        feedingEventListener = FeedingEventListener()
+
+        # 尝试使用事件驱动模型
         eventManager = EventManager()
+        feedingEventListener = FeedingEventListener()
+        cleanShitEventListener = CleanShitEventListener()
         eventManager.addEventListener(EVENT_FEEDING,feedingEventListener.excute)
+        eventManager.addEventListener(EVENT_CLEAN_SHIT, cleanShitEventListener.excute)
 
         eventManager.start()
+
         while True:
-            print("now")
+            logging.info("start")
             input("haha:")
             eventManager.sendEvent(event=MyEvent(
                 type=EVENT_FEEDING,
@@ -64,7 +70,11 @@ if __name__ == '__main__':
                 }))
 
 
-
+        #测试压力传感器
+        # pressureSensor = PressureSensor(SCK_channel=7, DT_channel=8)
+        # while True:
+        #     print(pressureSensor.getData())
+        #     time.sleep(1)
 
     except KeyboardInterrupt:
         pass
