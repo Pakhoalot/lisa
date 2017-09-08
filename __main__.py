@@ -5,30 +5,38 @@
 ''
 import logging
 
+import time
+
 from events.clean_shit_event_listener import CleanShitEventListener
 from events.event_manager import EventManager
 from events.event_register_list import *
 from events.feeding_event_listener import FeedingEventListener
 from events.myevent import MyEvent
 from events.rotate_camera_event_listener import RotateCameraEventListener
-from sensors.distance_detector import DistanceDetector
 from sensors.pressure_sensor import PressureSensor
-from sensors.servo import Servo
-from services.camera_service import CameraService
-from services.clean_shit_service import CleanShitService
-from services.water_dispenser_service import WaterDispenserService
-import time
-import threading
-import RPi.GPIO as GPIO
-import config
 
 __author__ = 'PakhoLeung'
 
 
-if __name__ == '__main__':
+def waitForEvent():
+    #抽象等待并接受数据的方法，打包并返回一个event对象
+    type = input('input type:')
+    data = {}
+    key = ''
+    value = 0
+    while True:
+        key = input('input key:')
+        if key == 'end':
+            break
+        value = input('input value:')
+        data[key] = value
 
+    event = MyEvent(type=type, data=data)
+    return event
 
+    pass
 
+def main():
     try:
 
         # 测试伺服机
@@ -65,24 +73,25 @@ if __name__ == '__main__':
         # 尝试使用事件驱动模型
         eventManager = EventManager()
         feedingEventListener = FeedingEventListener()
-        cleanShitEventListener = CleanShitEventListener()
+        # cleanShitEventListener = CleanShitEventListener()
         rotateCameraEventListener = RotateCameraEventListener()
         eventManager.addEventListener(EVENT_FEEDING,feedingEventListener.excute)
-        eventManager.addEventListener(EVENT_CLEAN_SHIT, cleanShitEventListener.excute)
+        # eventManager.addEventListener(EVENT_CLEAN_SHIT, cleanShitEventListener.excute)
         eventManager.addEventListener(EVENT_ROTATE_CAMERA, rotateCameraEventListener.excute)
 
         eventManager.start()
 
         while True:
             logging.info("start")
-            input("haha:")
-            eventManager.sendEvent(event=MyEvent(
-                type=EVENT_FEEDING,
-                data={
-                    'target': 280
-                }))
-
+            event = waitForEvent()
+            eventManager.sendEvent(event)
+            print(event.data.items())
 
 
     except KeyboardInterrupt:
         pass
+
+if __name__ == '__main__':
+    main()
+
+

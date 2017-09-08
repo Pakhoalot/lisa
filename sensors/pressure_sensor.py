@@ -23,7 +23,11 @@ class PressureSensor(ElectronicComponent):
 
     def getData(self):
         value = 0
+        GPIO.setup(self.__DT, GPIO.OUT)
+        GPIO.output(self.__DT, GPIO.HIGH)
+        GPIO.setup(self.__DT, GPIO.IN)
         GPIO.output(self.__SCK, GPIO.LOW)
+
         while GPIO.input(self.__DT) == GPIO.LOW:
             pass
         time.sleep(0.000001)

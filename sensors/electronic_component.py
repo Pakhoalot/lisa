@@ -13,6 +13,7 @@ class ElectronicComponent:
     RUNNING = 2
     PAUSE = 3
     TERMINATED = 4
+    sensorId = None
 
     def __init__(self) -> None:
         super().__init__()

@@ -69,7 +69,7 @@ class Servo(ElectronicComponent):
         self.__dc = (angle / (180 - 0)) * (12.5 - 2.5) + 2.5
         self.__changeDC(self.__dc)
         self.__angle = angle
-        time.sleep(1)
+        time.sleep(0.6)
         self.stop()
 
     def presentAngle(self):
